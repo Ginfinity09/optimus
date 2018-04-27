@@ -318,7 +318,7 @@ function Autoview_Class() {
 	function init() {
 		backtesting_export_init();
 
-		console.log("Autoview initialized.");
+		console.log("Optimus initialized.");
 	}
 
 	function p(x) {

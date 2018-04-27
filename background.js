@@ -5,6 +5,8 @@ console.log("Initialized")
 window.TRADINGVIEW = TradingView()
 
 chrome.runtime.onInstalled.addListener(run.bind(window, chrome_runtime_onInstall))
+
+//Lắng nghe tin nhắn từ tradingview.com
 chrome.runtime.onMessage.addListener(run.bind(window, executeMessage))
 
 chrome.tabs.onCreated.addListener(run.bind(TRADINGVIEW, TRADINGVIEW.toggleTradingViewListener))
@@ -44,6 +46,8 @@ function* chrome_runtime_onInstall(details) {
  * @param sendResponse
  */
 function* executeMessage(message, sender, sendResponse) {
+	//Hàm thực hiện tin nhắn từ "tradingview.com" gửi về
+	
 	if (sender && sender.hasOwnProperty("tab") && sender.tab.index < 0) {
 		return null // Ignore pre-render tabs
 	}
@@ -64,10 +68,10 @@ function* executeMessage(message, sender, sendResponse) {
 				message.response.p = message.request
 
 			case "event":
-				
+				//khởi tạo đối tượng alert từ tin nhắn nhận được "Alert.js"
 				const alert = Alert(message.response.p)
 				const lastEventId = yield* TRADINGVIEW.getTradingViewAttribute("EVENT_ID")
-				
+				//Nếu đây là thông báo mới
 				if (alert.eid > lastEventId) {
 					yield* TRADINGVIEW.setTradingViewAttribute("EVENT_ID", alert.eid)
 

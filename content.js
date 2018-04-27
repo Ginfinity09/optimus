@@ -16,10 +16,11 @@ function ping() {
 
 function relay(msg) {
 	try {
+		//Send message to background.js
 		chrome.runtime.sendMessage(chrome.runtime.id, msg);
 	}
 	catch (ex) {
-		console.warn("Autoview connection lost.");
+		console.warn("Optimus connection lost.");
 		window.location.reload();
 	}
 }

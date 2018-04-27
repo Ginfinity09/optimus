@@ -1,9 +1,17 @@
 "use strict";
+/*
+	On alerts from varible "TradingView"
+
+
+*/
+
+
 function callback_init() {
+	
 	if (typeof TradingView.alertsDispatcher === "undefined" || typeof TradingView.alertsDispatcher.alerts === "undefined") {
 		return setTimeout(callback_init, 500);
 	}
-
+	
 	TradingView.alertsDispatcher.alerts.on("fired", callback_push)
 }
 
@@ -11,6 +19,7 @@ function callback_push(alertEvent) {
 	/**
 	 * @type {{alertId, symbol, resolution, description, playSound, soundFile, soundDuration, showPopup, fireTime, barTime, crossInterval}}
 	 */
+	
 	let attributes = alertEvent.attributes
 	let message = {};
 
@@ -43,6 +52,7 @@ function callback_push(alertEvent) {
 }
 
 function callback_xhr(data) {
+	
 	if ((this.responseType || "text") !== "text") {
 		return true; // responseText unavailable
 	}
@@ -79,7 +89,7 @@ function document_init() {
 }
 
 function init() {
-	console.log("Content Helper initialized.");
+	console.log("Optimus Helper initialized.");
 
 	Autoview.init();
 	callback_init();
@@ -87,7 +97,10 @@ function init() {
 }
 
 function relay(msg) {
+	//Send message to this location "tradingview.com"
+	//After file "content.js" will receive that message and send to background.js
 	window.postMessage(msg, location.origin);
+	
 }
 
 

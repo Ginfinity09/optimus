@@ -18,7 +18,6 @@
 			"js/Storage.js",
 			"js/TradingView.js",
 			"js/TradingViewListener.js",
-
 			"js/_1Broker.js",
 			"js/Binance.js",
 			"js/Bitfinex.js",
@@ -37,6 +36,7 @@
 			"background.js"
 		]
 	},
+	"key":"MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCcebUC1IngQRJlHI0l27MdV3BRhOe2op5Kez8WzQGP42Mm+XkCfIk1YMwCzBzJwdRDZA/mQx2tjdQOJojhzXV30ACJKjvZUlcrbqIwVXsvzHuvHupPKK0lKcFKBDTbUsUuE6UnzBD/qZ81r2nkvm2qOnSD0Ahp7RA0DImyiLAFhtLYhH0wNlhp6ddSrqfGtJ/Cf3tyYWASklAmn1MpAbXVO1mKdDdnk0mn6f9X7sdhW9du9F6ummX/qmlfJMKSqnQAKZEtFQLRrLhEi0sQH62Lobx6cpsp9SgM+IvWNjfRZbo6Kg/UCEXVourDkl/M8LPAqVySYlpR5iH+9GR1Iu2NAgMBAAECggEAEqaRFD7IFlI7QpEGI+qNbWRkL1tDkSnN6zvId8vEsWVdhqI6sbitVA7vEjBJCCVRyxyMppn+WhbrHSqrqxpls3u37KF7k7o0SKl9rHwr3DUn0uZA8GF9Tc4ty0g4EqJJfWX7DATPS+HoZ6o6WXj3MlCYXbO4pQOMKGAMM5sGPAo3eLaKIGgifNdh76TSsezpXpfD0OviB2olUnvTl0mJ1vFG2QvQogfsNLdrHxqYJGXJXQcOxwq1iWp/whb/oIz8fafl5eGd0iEDn/ndVGt7wSdXoGPj++zDk4sALXzagYaLt3yBduPRMDR6v2x5tK5XZcZoEfERJbZnAmpp/81gwwKBgQDdQgwoZBNTN3KBedwL77cQ+Gb+XWUpUDZnJsItiOKpiriE4O4Qy0q1aSmFLcHVT/W1RibpQS+cyIgIb9LoXN+MXsArVgEbXszG+uygeGV0w7xEzkk2leq1jwJpyFxXSsj76UOQC5MtzNE6VffgZ48ZOR7o6uIJWEMfFnG89GkPwwKBgQC1C5TEMR2h+ue37utGbWUbtbDIspzp+whmGmNYvxIEU/p49HwupQxaN6cRU2Va10ehXul8PaK98AipxKRVOAzXUlo490JzS8hvwXwEIiWcTjXEPLPxA2BPctD+sXtL9QDz7iaFcI2a3D5QbNepppBI+Nc5yJi+vIgIVod1Th0IbwKBgBH2z9fjsDH8eX6Lr1MExn9JO8uBN7pv+crMOc3KpGSRj8OyI4IXj1xFSoq2mVtBX7i1Fmmv0jbPjUPqGFynVbsm4kFifTqEqumo69dnjw046ytG+GjHKUROdSqzitPHjaPuX37tgaihTYeH/VUp81Nf8OOGVo3dra1zfA6UZYdTAoGAaY62D2nfsCi9X/XSgb6Yu/5Ec9AIQzgVXoq2L/E/jPx1xn4txXh/6j4Wj7iDGOL6JbFUCxdYwsuoEWvQsMs8WXLvndU0jkq6M8apCzPpn+fN23vVIonoZoo4JrfOfqv8AT1ygkzsk0Uko/nCCG1QJOvJeSxnOpZr7giddBy2OssCgYA1Itrr5o1nfR7APduQ6oHBZQ0LRDdT7Eb/AJIQeRpOtoQWNmBV1BBBVVaSUJCFTWOIHWtI6uQygfDXxPFHNWLHtYVDhbkjZ8wUKQOTlVDEkP9nR/gWwe6JlnwJaWMnWBXvCQGmgIAZRmXRX+Iaos53KnR+eAEM9KKLS+dzqXlOuw==",
 	"browser_action": {
 		"default_icon": {
 			"19": "img/icons/logo.png",
@@ -54,7 +54,7 @@
 		"matches": [ "https://*.tradingview.com/*" ],
 		"run_at": "document_start"
 	} ],
-	"description": "TradingView can now become automated trading.",
+	"description": "Automated Trading from Tradingview",
 	"icons": {
 		"16": "img/icons/logo.png",
 		"48": "img/icons/logo.png",
@@ -88,11 +88,11 @@
 		"https://*.tradingview.com/*"
 	],
 	"short_name": "Optimus",
-	"version": "1.0.1",
+	"version": "1.0.0",
 	"web_accessible_resources": [
 		"js/analytics.js",
 		"js/functions.js",
-		"js/Autoview.js",
+		"js/Optimus.js",
 		"content_helper.js"
 	]
 }
