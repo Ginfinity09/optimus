@@ -6,7 +6,7 @@ window.POLONIEX_NONCE_OFFSET = -1
  * @returns {*}
  * @constructor
  */
-function Poloniex() {
+function Poloniex(){
 	let state = {
 		aliases: [
 			"POLONIEX",

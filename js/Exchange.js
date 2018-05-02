@@ -6,16 +6,19 @@
  * @constructor
  */
 function Exchange(state) {
+	
 	state = state || {}
-
+	// check payment - Tạm thời mở khóa tất cả
+	let test = true
+	
 	function* executeCommand(Command) {
 		if (typeof Command !== "object") {
 			throw new TypeError("Invalid Command object provided: " + typeof Command)
 		}
-
+		
 		// this.setExchangeAccount(Command.a)
 		state.account = Command.a
-
+		
 		// Cancel / Close
 		switch (Command.c) {
 			case "order":
@@ -125,14 +128,16 @@ function Exchange(state) {
 	}
 
 	function getSubscriptions(key) {
+		
 		if (state.hasOwnProperty("subscriptions")) {
+			
 			if (arguments.length > 0) {
 				if (typeof key !== "string") {
 					throw new TypeError("Invalid Subscription key: " + typeof key)
 				} else if (!state.subscriptions.hasOwnProperty(key)) {
 					throw new ReferenceError("Invalid Subscription key: " + key)
 				}
-
+				
 				return state.subscriptions[key]
 			}
 
@@ -160,19 +165,24 @@ function Exchange(state) {
 
 	function* hasPermission() {
 		const permissions = getPermissions()
+		
 		const granted = yield permissions_check.bind(this, permissions)
-
+		
 		return granted
 	}
 
 	function* hasSubscription() {
 		// List of possible subscriptions
 		let subscriptions = getSubscriptions()
+		
+		if(test === true){
+			return true
+		}
+		
 		subscriptions = [].concat(subscriptions.active, subscriptions.inactive)
 		if (subscriptions.length === 0) {
 			return true
 		}
-
 		// List of active subscriptions
 		let purchases = []
 		try {
@@ -181,11 +191,12 @@ function Exchange(state) {
 				const cws_purchases = yield* inapp().getPurchases()
 				purchases = [].concat(purchases, cws_purchases)
 
-				yield* PWP().checkPurchases(purchases)
+				inappyield* PWP().checkPurchases(purchases)
 			}
 		} catch (ex) {
 			// TODO console.warn("Google", ex.message)
 		}
+		
 		try {
 			const pwp_purchases = yield* PWP().getExchangeSubscriptions()
 			purchases = [].concat(purchases, pwp_purchases)

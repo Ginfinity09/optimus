@@ -556,34 +556,47 @@ function* settings_init() {
 	permissions.permissions = permissions.permissions || []
 	const parent = document.getElementById("settings-permissions")
 	const items = parent.querySelectorAll("li.list-group-item")
-
+	
+	
+	
 	for (let i = 0; i < items.length; i++)
 	{
+		
 		const item = items[i]
 		const alias = item.dataset.exchange
+		
 		const exchange = Broker().getExchangeByAlias(alias)
-
+		
+		
+		
 		let activated = false
 		let granted = false
 		let subscriptions = []
 		if (exchange) {
+			
 			activated = yield* exchange.exchangeHasSubscription()
+			
 			granted = yield* exchange.exchangeHasPermission()
 			subscriptions = exchange.getExchangeSubscriptions("active")
+			
+			
 		}
-
+		
 		let buttonGrant = item.querySelector("[name='grant']")
 		let buttonRevoke = item.querySelector("[name='revoke']")
 		buttonGrant.classList.add("hide")
 		buttonRevoke.classList.add("hide")
-
+		
 		if (subscriptions.length) {
 			let buttonSubscriptionStart = item.querySelectorAll("[name='subscription-start']")
 			let buttonSubscriptionStop = item.querySelectorAll("[name='subscription-stop']")
+			
 			buttonSubscriptionStart.forEach((element) => element.classList.add("hide"))
 			buttonSubscriptionStop.forEach((element) => element.classList.add("hide"))
-
+			
 			if (granted) {
+				
+				
 				if (activated) {
 					buttonSubscriptionStop.forEach((element) => element.classList.remove("hide"))
 				} else {

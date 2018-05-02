@@ -454,6 +454,20 @@ function BitMEX() {
 		}
 		params.side = Command.isBid ? "Buy" : "Sell"
 		params.symbol = pair.symbol
+		
+		
+		if (Command.ts) {
+			params.ordType = "Stop"
+			params.pegOffsetValue = Command.ts.reference(contracts).resolve(0)
+			params.pegPriceType   = "TrailingStopPeg"
+			params.execInst = "Close,LastPrice"
+			
+			if(params.side == "Sell"){
+				params.pegOffsetValue *= -1
+			}
+			delete(params.price);
+				
+		}
 
 		if (Command.d) {
 			console.info("BitMEX", params)

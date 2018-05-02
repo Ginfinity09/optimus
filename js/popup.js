@@ -23,6 +23,7 @@ function* exchange_link(states) {
 	const hasSubscription = yield* this.exchangeHasSubscription()
 
 	let link = new Template("#exchange-link");
+	console.log(link);
 	link.data = {
 		"exchange.alias": alias,
 		"exchange.id": alias.toLowerCase(),

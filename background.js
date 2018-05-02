@@ -17,6 +17,7 @@ run(init)
 
 
 function* chrome_runtime_onInstall(details) {
+	
 	const manifest = chrome.runtime.getManifest()
 
 	console.info("Event:", details.reason)
@@ -90,9 +91,11 @@ function* executeMessage(message, sender, sendResponse) {
 							// Exchange
 							if (isCommand) {
 								let exchange = Broker().getExchange(command.e, command.s)
+								
 								if (exchange) {
+									//Send google analytics
 									gaEvent(exchange.getExchangeName(), "command", command.s)
-
+									//Thực hiện trade
 									yield* exchange.executeCommand(command)
 								}
 							}

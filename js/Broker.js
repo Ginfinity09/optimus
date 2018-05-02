@@ -4,20 +4,25 @@ function Broker() {
 		exchanges: [],
 		patterns: [],
 	}
-
+	
+	//Khi gọi hàm này là chạy function "add" luôn(xem ở cuối)
+	
 	function add(factoryName) {
+		
 		if (typeof factoryName !== "string") {
 			throw new TypeError("Invalid Exchange provided: " + typeof factoryName)
 		}
+		
 		if (!window.hasOwnProperty(factoryName)) {
 			throw new ReferenceError("Undefined Exchange callable: " + factoryName)
 		}
 		if (typeof window[factoryName] !== "function") {
 			throw new TypeError("Invalid Exchange callable provided: " + typeof window[factoryName])
 		}
-
+		
 		const exchange = getObject(factoryName)
 		const aliases = exchange.getExchangeAliases()
+		
 		const patterns = exchange.getExchangePatterns()
 
 		if (aliases.length === 0 && patterns.length === 0) {
@@ -48,6 +53,7 @@ function Broker() {
 	}
 
 	function get(alias, symbol) {
+		
 		return getByAlias(alias) || getByPattern(symbol) || null
 	}
 
@@ -56,6 +62,7 @@ function Broker() {
 	}
 
 	function getByAlias(alias) {
+		
 		return isAlias(alias) ? getObject(state.aliases[alias]) : null
 	}
 
@@ -71,6 +78,7 @@ function Broker() {
 	}
 
 	function getObject(factoryName) {
+		
 		const exchange = window[factoryName]()
 		
 		return exchange
@@ -80,7 +88,7 @@ function Broker() {
 		if (typeof alias !== "string") {
 			throw new TypeError("Invalid Alias provided: " + typeof alias)
 		}
-
+		
 		return state.aliases.hasOwnProperty(alias)
 	}
 
@@ -105,6 +113,6 @@ function Broker() {
 	self.addExchange("OKCoin")
 	self.addExchange("OKEX")
 	self.addExchange("Poloniex")
-
+	
 	return self
 }

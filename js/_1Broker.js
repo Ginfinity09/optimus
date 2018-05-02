@@ -32,7 +32,7 @@ function _1Broker() {
 		},
 		website: "https://1broker.com/?r=3228",
 	}
-
+	
 	function* account() {
 		let overview = yield* get.call(this, "/user/overview.php")
 		overview.available = Number(overview.balance).toFixed(8)
