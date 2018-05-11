@@ -468,6 +468,21 @@ function BitMEX() {
 			delete(params.price);
 				
 		}
+		
+		if(Command.st) {
+			params.execInst = "LastPrice"
+			params.ordType = "StopLimit"
+			params.price = price
+			
+			let stValue = parseFloat(Command.st.reference(contracts).resolve(0))
+			
+			if(params.side == "Sell"){
+				params.stopPx = parseFloat(price) + stValue
+			}	
+			else {
+				params.stopPx = parseFloat(price) - stValue	
+			}
+		}
 
 		if (Command.d) {
 			console.info("BitMEX", params)

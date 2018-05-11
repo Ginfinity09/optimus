@@ -22,6 +22,7 @@ function Command(raw) {
 		s: "Symbol",
 		shared: "Shared",
 		sl: "Stop Loss",
+		st: "Stop Limit",
 		t: "order Type",
 		tp: "Take Profit",
 		ts: "Trailing Stop",
@@ -132,6 +133,7 @@ function Command(raw) {
 			case "p":
 			case "q":
 			case "sl":
+			case "st":
 			case "tp":
 			case "ts":
 				this[p] = NumberObject(value)
