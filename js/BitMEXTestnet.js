@@ -470,21 +470,6 @@ function BitMEXTestnet() {
 				
 		}
 		
-		if(Command.st) {
-			params.execInst = "LastPrice"
-			params.ordType  = "StopLimit"
-			params.price    = price
-			
-			let stValue = parseFloat(Command.st.reference(contracts).resolve(0));
-			
-			if(params.side == "Sell"){
-				params.stopPx = parseFloat(price) + stValue
-			}	
-			else {
-				params.stopPx = parseFloat(price) - stValue	
-			}
-		}
-		
 		if (Command.d) {
 			console.info("BitMEX Testnet", params)
 			return false // Disabled
@@ -496,6 +481,32 @@ function BitMEXTestnet() {
 		}
 
 		const order = yield* post.call(this, "/order", params)
+		
+		if(Command.sl && Command.slp) {
+			
+			price = parseFloat(price)
+			
+			let slValue = parseFloat(Command.sl.reference(contracts).resolve(0))
+			let slPrice = parseFloat(Command.slp.resolve(market.precision))
+			
+			params.execInst = "LastPrice"
+			params.ordType  = "StopLimit"
+			
+			if(params.side == "Sell"){
+				price += slPrice
+				params.side = "Buy"
+				params.stopPx = price - slValue
+			}	
+			else {
+				price -= slPrice
+				params.side = "Sell"
+				params.stopPx = price + slValue	
+			}
+			
+			params.price = price
+			
+			yield* post.call(this, "/order", params)
+		}
 
 		return order
 	}
