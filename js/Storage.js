@@ -62,9 +62,11 @@ function Storage(storageArea) {
 		getStorageValue: function* (...keys) {
 			// Load existing
 			const storage = yield storageGet.bind(this, null)
+			
 			// Find desired leaf
+			
 			const value = get(storage, keys)
-
+			
 			return value
 		},
 		removeStorageValue: function* (...keys) {

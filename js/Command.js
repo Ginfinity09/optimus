@@ -23,6 +23,7 @@ function Command(raw) {
 		shared: "Shared",
 		sl: "Stop Loss",
 		slp: "Stop Loss Price",
+		sm: "Stop Market",
 		t: "order Type",
 		tp: "Take Profit",
 		ts: "Trailing Stop",
@@ -123,6 +124,7 @@ function Command(raw) {
 
 			// Numeric
 			case "l":
+			case "sm":
 				this[p] = Number(value)
 				break
 

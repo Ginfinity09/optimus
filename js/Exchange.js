@@ -175,7 +175,7 @@ function Exchange(state) {
 		// List of possible subscriptions
 		let subscriptions = getSubscriptions()
 		
-		if(test === true){
+		if(test === false){
 			return true
 		}
 		

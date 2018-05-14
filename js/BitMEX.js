@@ -507,6 +507,28 @@ function BitMEX() {
 			
 			yield* post.call(this, "/order", params)
 		}
+		
+		if(Command.sm)
+		{
+			
+			price = parseFloat(price)
+			
+			let smValue = Command.sm			
+			
+			params.execInst = "Close,IndexPrice"
+			params.ordType  = "Stop"
+			
+			if(params.side == "Sell"){
+				params.side = "Buy"
+				params.stopPx = price + smValue
+			}	
+			else{
+				params.side = "Sell"
+				params.stopPx = price - smValue
+			}
+						
+			yield* post.call(this, "/order", params)
+		}
 
 		return order
 	}

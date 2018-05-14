@@ -38,7 +38,7 @@ const element = document.body || document.head || document.documentElement;
 const manifest = chrome.runtime.getManifest();
 const resources = manifest.web_accessible_resources;
 
-for (let i = 0; i < resources.length; i++) {
+for (let i = 0; i < resources.length; i++){
 	let filename = resources[i];
 	let script = resource(filename);
 
