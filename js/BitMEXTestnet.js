@@ -437,6 +437,7 @@ function BitMEXTestnet() {
 		const leverage = cross ? 100 : Command.l || 1
 		const contracts = getContracts(available, leverage, price, true)
 		
+		price = parseFloat(price)
 		
 		let params = {}
 		if (Command.t === "post") {
@@ -469,7 +470,7 @@ function BitMEXTestnet() {
 			delete(params.price);
 				
 		}
-		
+
 		if (Command.d) {
 			console.info("BitMEX Testnet", params)
 			return false // Disabled
@@ -482,53 +483,75 @@ function BitMEXTestnet() {
 
 		const order = yield* post.call(this, "/order", params)
 		
-		if(Command.sl && Command.slp) {
-			
-			price = parseFloat(price)
+		if(Command.sl) {
 			
 			let slValue = parseFloat(Command.sl.reference(contracts).resolve(0))
-			let slPrice = parseFloat(Command.slp.resolve(market.precision))
-			
-			params.execInst = "LastPrice"
-			params.ordType  = "StopLimit"
-			
-			if(params.side == "Sell"){
-				price += slPrice
-				params.side = "Buy"
-				params.stopPx = price - slValue
-			}	
-			else {
-				price -= slPrice
-				params.side = "Sell"
-				params.stopPx = price + slValue	
-			}
-			
-			params.price = price
-			
-			yield* post.call(this, "/order", params)
-		}
-		
-		if(Command.sm)
-		{
-			
-			price = parseFloat(price)
-			
-			let smValue = Command.sm			
 			
 			params.execInst = "Close,IndexPrice"
 			params.ordType  = "Stop"
+			params.side     = (params.side == "Sell") ? "Buy" : "Sell"
 			
 			if(params.side == "Sell"){
-				params.side = "Buy"
-				params.stopPx = price + smValue
+				slValue *= -1
 			}	
-			else{
-				params.side = "Sell"
-				params.stopPx = price - smValue
+			
+			params.stopPx  = price + slValue
+			
+			//Stop Market không có price
+			delete params.price
+			
+			//Nếu có Stop Limit
+			if(Command.slp) {
+				
+				let slPrice = parseFloat(Command.slp.reference(contracts).resolve(0))
+				params.execInst = "LastPrice"
+				params.ordType  = "StopLimit"
+				
+				if(params.side == "Sell") {
+					slPrice *= -1
+				}	
+				
+				params.price = params.stopPx + slPrice	
 			}
-						
+			
 			yield* post.call(this, "/order", params)
 		}
+		//Take Profit
+		if (Command.tp) {
+			
+			params.execInst = "LastPrice"
+			params.ordType  = "MarketIfTouched"
+			params.side     = (params.side == "Sell") ? "Buy" : "Sell"
+			
+			let tpValue = parseFloat(Command.tp.reference(contracts).resolve(0))
+
+			if(params.side == "Buy"){
+				tpValue *= -1
+			}
+			
+			params.stopPx = price + tpValue;
+			
+			delete params.price
+			
+			//Take Profit Limit
+			if (Command.tpl) {
+				
+				let tpPrice = parseFloat(Command.tpl.reference(contracts).resolve(0))
+				params.ordType = "LimitIfTouched"
+				
+				if(params.side == "Sell"){
+					tpPrice *= -1
+				}
+				
+				params.price = params.stopPx + tpPrice;
+					
+			}
+			
+			yield* post.call(this, "/order", params)
+				
+		}
+		
+		
 
 		return order
 	}

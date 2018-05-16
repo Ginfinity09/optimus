@@ -26,6 +26,7 @@ function Command(raw) {
 		sm: "Stop Market",
 		t: "order Type",
 		tp: "Take Profit",
+		tpl: "Take Profit Limit",
 		ts: "Trailing Stop",
 		u: "Unit",
 		v: "Version",
@@ -136,8 +137,9 @@ function Command(raw) {
 			case "p":
 			case "q":
 			case "sl":
-			case "tp":
 			case "ts":
+			case "tp":
+			case "tpl":
 				this[p] = NumberObject(value)
 				break
 
