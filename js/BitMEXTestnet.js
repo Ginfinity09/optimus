@@ -487,7 +487,7 @@ function BitMEXTestnet() {
 			
 			let slValue = parseFloat(Command.sl.reference(contracts).resolve(0))
 			
-			params.execInst = "Close,IndexPrice"
+			params.execInst = "Close,LastPrice"
 			params.ordType  = "Stop"
 			params.side     = (params.side == "Sell") ? "Buy" : "Sell"
 			
@@ -504,7 +504,7 @@ function BitMEXTestnet() {
 			if(Command.slp) {
 				
 				let slPrice = parseFloat(Command.slp.reference(contracts).resolve(0))
-				params.execInst = "LastPrice"
+				params.execInst = "Close,LastPrice"
 				params.ordType  = "StopLimit"
 				
 				if(params.side == "Sell") {
@@ -519,7 +519,7 @@ function BitMEXTestnet() {
 		//Take Profit
 		if (Command.tp) {
 			
-			params.execInst = "LastPrice"
+			params.execInst = "Close,LastPrice"
 			params.ordType  = "MarketIfTouched"
 			params.side     = (params.side == "Sell") ? "Buy" : "Sell"
 			
