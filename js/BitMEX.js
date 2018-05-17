@@ -455,21 +455,15 @@ function BitMEX() {
 		params.side = Command.isBid ? "Buy" : "Sell"
 		params.symbol = pair.symbol
 		
-		
+		//Trailing Stop
 		if (Command.ts) {
+			params.execInst       = "Close,LastPrice"
 			params.ordType = "Stop"
-			params.pegOffsetValue = Command.ts
+			params.pegOffsetValue = Command.ts.relative(price).resolve(market.precision)
 			params.pegPriceType   = "TrailingStopPeg"
-			params.execInst = "Close,LastPrice"
-			
-			if(params.side == "Sell"){
-				params.pegOffsetValue *= -1
-			}
 			delete(params.price);
-				
 		}
 		
-
 		if (Command.d) {
 			console.info("BitMEX", params)
 			return false // Disabled
@@ -482,74 +476,47 @@ function BitMEX() {
 
 		const order = yield* post.call(this, "/order", params)
 		
-		if(Command.sl) {
+		//StopLoss
+		if(Command.sl) 
+		{
+			let slParams = {}
 			
-			let slValue = Command.sl
+			slParams.symbol   = pair.symbol			
+			slParams.execInst = "Close,LastPrice"
+			slParams.ordType  = "Stop"
+			slParams.side     = (params.side == "Sell") ? "Buy" : "Sell"
+			slParams.stopPx   = Command.sl.relative(price).resolve(market.precision)
 			
-			params.execInst = "Close,LastPrice"
-			params.ordType  = "Stop"
-			params.side     = (params.side == "Sell") ? "Buy" : "Sell"
-			
-			if(params.side == "Sell"){
-				slValue *= -1
-			}	
-			
-			params.stopPx  = price + slValue
-			
-			//Stop Market không có price
-			delete params.price
-			
+			//Stop Market không có price			
 			//Nếu có Stop Limit
 			if(Command.slp) {
-				
-				let slPrice = Command.slp
-				params.execInst = "Close,LastPrice"
-				params.ordType  = "StopLimit"
-				
-				if(params.side == "Sell") {
-					slPrice *= -1
-				}	
-				
-				params.price = params.stopPx + slPrice	
+				slParams.ordType  = "StopLimit"
+				slParams.price    = Command.slp.relative(slParams.stopPx).resolve()
 			}
 			
-			yield* post.call(this, "/order", params)
+			yield* post.call(this, "/order", slParams)
+			
 		}
 		//Take Profit
 		if (Command.tp) {
 			
-			params.execInst = "Close,LastPrice"
-			params.ordType  = "MarketIfTouched"
-			params.side     = (params.side == "Sell") ? "Buy" : "Sell"
+			let tpParams = {}
 			
-			let tpValue = Command.tp
-
-			if(params.side == "Buy"){
-				tpValue *= -1
-			}
-			
-			params.stopPx = price + tpValue;
-			
-			delete params.price
+			tpParams.symbol   = pair.symbol		
+			tpParams.execInst = "Close,LastPrice"
+			tpParams.ordType  = "MarketIfTouched"
+			tpParams.side     = (params.side == "Sell") ? "Buy" : "Sell"
+			tpParams.stopPx   = Command.tp.relative(price).resolve(market.precision)
 			
 			//Take Profit Limit
 			if (Command.tpl) {
-				
-				let tpPrice = Command.tpl
-				params.ordType = "LimitIfTouched"
-				
-				if(params.side == "Sell"){
-					tpPrice *= -1
-				}
-				
-				params.price = params.stopPx + tpPrice;
-					
+				tpParams.ordType = "LimitIfTouched"
+				tpParams.price    = Command.tpl.relative(tpParams.stopPx).resolve()
 			}
 			
-			yield* post.call(this, "/order", params)
-				
+			yield* post.call(this, "/order", tpParams)
 		}
-
+		
 		return order
 	}
 

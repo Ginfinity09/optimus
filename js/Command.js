@@ -126,11 +126,6 @@ function Command(raw) {
 			// Numeric
 			case "l":
 			case "sm":
-			case "sl":
-			case "slp":
-			case "ts":
-			case "tp":
-			case "tpl":
 				this[p] = Number(value)
 				break
 
@@ -140,6 +135,11 @@ function Command(raw) {
 			case "fp":
 			case "p":
 			case "q":
+			case "ts":
+			case "sl":
+			case "slp":
+			case "tp":
+			case "tpl":
 				this[p] = NumberObject(value)
 				break
 
