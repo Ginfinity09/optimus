@@ -212,16 +212,19 @@
 										<td>Static: #, %<br />
 											Random: #-#, %-%</td>
 										<td><strong>1Broker, Bitfinex</strong><br />
-											Provided value is applied to the position's entry price.
+											Provided value is applied to the position's entry price.<br />
+                                            <strong>Long</strong>: sl < 0<br />
+                                            <strong>Short</strong>: sl > 0
 										</td>
 									</tr>
                                     <tr>
 										<th>Stop Loss Price</th>
 										<td><code>slp</code></td>
 										<td class="text-muted">n/a</td>
-										<td>Static: > 0<br />
+										<td>Static: #, %<br />
+											Random: #-#, %-%</td>
 										</td>
-										<td>Mở lệnh Stop Limit <br />
+										<td>Giá đóng lệnh. Chênh lệch theo Stop Loss(sl). Không cài đặt sẽ đóng lệnh theo Market
                                         	
 										</td>
 									</tr>
@@ -244,8 +247,21 @@
 										<td class="text-muted">n/a</td>
 										<td>Static: #, %<br />
 											Random: #-#, %-%</td>
-										<td><strong>1Broker only</strong><br />
-											Provided value is applied to the position's entry price.
+										<td><strong>1Broker, Bitmex</strong><br />
+											Provided value is applied to the position's entry price.<br />
+                                            <strong>Long</strong>: tp > 0<br />
+                                            <strong>Short</strong>: tp < 0
+										</td>
+									</tr>
+                                    <tr>
+										<th>Take Profit Price</th>
+										<td><code>tpl</code></td>
+										<td class="text-muted">n/a</td>
+										<td>Static: #, %<br />
+											Random: #-#, %-%</td>
+										</td>
+										<td>Giá đóng lệnh. Chênh lệch theo Take Profit(tp). Không cài đặt sẽ đóng lệnh theo Market
+                                        	
 										</td>
 									</tr>
 									<tr>
@@ -269,8 +285,13 @@
 										<th>Trailing Stop</th>
 										<td><code>ts</code></td>
 										<td class="text-muted">n/a</td>
-										<td> > 0</td>
+										<td>Static: #, %<br />
+											Random: #-#, %-%</td>
+										</td>
 										<td>Mở lệnh Trailing Stop <br />
+                                        	<strong>Long</strong>: ts > 0<br />
+                                            <strong>Short</strong>: ts < 0
+                                        </td>
 									</tr>
                                     <!--<tr>
 										<th>Version</th>

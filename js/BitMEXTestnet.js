@@ -493,7 +493,6 @@ function BitMEXTestnet() {
 			slParams.side     = (params.side == "Sell") ? "Buy" : "Sell"
 			slParams.stopPx   = Command.sl.relative(price).resolve(market.precision)
 			
-			//Stop Market không có price			
 			//Nếu có Stop Limit
 			if(Command.slp) {
 				slParams.ordType  = "StopLimit"
