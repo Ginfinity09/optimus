@@ -460,7 +460,7 @@ function BitMEXTestnet() {
 		
 		if (Command.ts) {
 			params.ordType = "Stop"
-			params.pegOffsetValue = Command.ts.reference(contracts).resolve(0)
+			params.pegOffsetValue = Command.ts
 			params.pegPriceType   = "TrailingStopPeg"
 			params.execInst = "Close,LastPrice"
 			
@@ -485,7 +485,7 @@ function BitMEXTestnet() {
 		
 		if(Command.sl) {
 			
-			let slValue = parseFloat(Command.sl.reference(contracts).resolve(0))
+			let slValue = Command.sl
 			
 			params.execInst = "Close,LastPrice"
 			params.ordType  = "Stop"
@@ -503,7 +503,7 @@ function BitMEXTestnet() {
 			//Nếu có Stop Limit
 			if(Command.slp) {
 				
-				let slPrice = parseFloat(Command.slp.reference(contracts).resolve(0))
+				let slPrice     = Command.slp
 				params.execInst = "Close,LastPrice"
 				params.ordType  = "StopLimit"
 				
@@ -523,7 +523,7 @@ function BitMEXTestnet() {
 			params.ordType  = "MarketIfTouched"
 			params.side     = (params.side == "Sell") ? "Buy" : "Sell"
 			
-			let tpValue = parseFloat(Command.tp.reference(contracts).resolve(0))
+			let tpValue = Command.tp
 
 			if(params.side == "Buy"){
 				tpValue *= -1
@@ -536,7 +536,7 @@ function BitMEXTestnet() {
 			//Take Profit Limit
 			if (Command.tpl) {
 				
-				let tpPrice = parseFloat(Command.tpl.reference(contracts).resolve(0))
+				let tpPrice = Command.tpl
 				params.ordType = "LimitIfTouched"
 				
 				if(params.side == "Sell"){
