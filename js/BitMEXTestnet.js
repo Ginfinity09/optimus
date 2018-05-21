@@ -439,7 +439,7 @@ function BitMEXTestnet() {
 		const leverage = cross ? 100 : Command.l || 1
 		const contracts = getContracts(available, leverage, price, true)
 		
-		price = parseFloat(price)
+		
 		
 		let params = {}
 		if (Command.t === "post") {
@@ -462,7 +462,7 @@ function BitMEXTestnet() {
 		
 		if (Command.ts) {
 			params.ordType = "Stop"
-			params.pegOffsetValue = Command.ts.relative(price).resolve(market.precision)
+			params.pegOffsetValue = Command.ts.relative(first).resolve(market.precision)
 			params.pegPriceType   = "TrailingStopPeg"
 			params.execInst = "Close,LastPrice"
 			
@@ -491,14 +491,16 @@ function BitMEXTestnet() {
 			slParams.execInst = "Close,LastPrice"
 			slParams.ordType  = "Stop"
 			slParams.side     = (params.side == "Sell") ? "Buy" : "Sell"
-			slParams.stopPx   = Command.sl.relative(price).resolve(market.precision)
+			slParams.stopPx   = Command.sl.relative(first).resolve(market.precision)
+			
 			
 			//Nếu có Stop Limit
 			if(Command.slp) {
+				
 				slParams.ordType  = "StopLimit"
-				slParams.price    = Command.slp.relative(slParams.stopPx).resolve()
+				slParams.price    = Command.slp.relative(slParams.stopPx).resolve(market.precision)
+				
 			}
-			
 			yield* post.call(this, "/order", slParams)
 			
 		}
@@ -511,14 +513,13 @@ function BitMEXTestnet() {
 			tpParams.execInst = "Close,LastPrice"
 			tpParams.ordType  = "MarketIfTouched"
 			tpParams.side     = (params.side == "Sell") ? "Buy" : "Sell"
-			tpParams.stopPx   = Command.tp.relative(price).resolve(market.precision)
+			tpParams.stopPx   = Command.tp.relative(first).resolve(market.precision)
 			
 			//Take Profit Limit
 			if (Command.tpl) {
 				tpParams.ordType = "LimitIfTouched"
-				tpParams.price    = Command.tpl.relative(tpParams.stopPx).resolve()
+				tpParams.price    = Command.tpl.relative(tpParams.stopPx).resolve(market.precision)
 			}
-			
 			yield* post.call(this, "/order", tpParams)
 		}
 		
