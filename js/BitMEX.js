@@ -474,7 +474,7 @@ function BitMEX() {
 			yield* setLeverage.call(this, pair.symbol, cross ? 0 : leverage)
 		}
 
-		//const order = yield* post.call(this, "/order", params)
+		const order = yield* post.call(this, "/order", params)
 		
 		//StopLoss
 		if(Command.sl) 
@@ -491,13 +491,13 @@ function BitMEX() {
 			//Nếu có Stop Limit
 			if(Command.slp) {
 				slParams.ordType  = "StopLimit"
-				console.log(market.precision);
+				//console.log(market.precision);
 				slParams.price    = Command.slp.relative(slParams.stopPx).resolve(market.precision)
-				console.log(slParams);
+				//console.log(slParams);
 				return false;
 			}
 			
-			//yield* post.call(this, "/order", slParams)
+			yield* post.call(this, "/order", slParams)
 			
 		}
 		//Take Profit
