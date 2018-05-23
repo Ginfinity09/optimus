@@ -498,7 +498,8 @@ function BitMEXTestnet() {
 			if(Command.slp) {
 				
 				slParams.ordType  = "StopLimit"
-				slParams.price    = Command.slp.relative(slParams.stopPx).resolve(market.precision)
+				
+				slParams.price    = Command.slp.relative(slParams.stopPx).resolve(0)
 				
 			}
 			yield* post.call(this, "/order", slParams)
