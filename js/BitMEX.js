@@ -491,12 +491,13 @@ function BitMEX() {
 			//Nếu có Stop Limit
 			if(Command.slp) {
 				slParams.ordType  = "StopLimit"
-				
-				slParams.price    = Command.slp.relative(slParams.stopPx).resolve(0)
-				
+				console.log(market.precision);
+				slParams.price    = Command.slp.relative(slParams.stopPx).resolve(market.precision)
+				console.log(slParams);
+				return false;
 			}
 			
-			yield* post.call(this, "/order", slParams)
+			//yield* post.call(this, "/order", slParams)
 			
 		}
 		//Take Profit

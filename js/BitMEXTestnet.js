@@ -479,7 +479,7 @@ function BitMEXTestnet() {
 		if (Command.hasOwnProperty("l")) {
 			yield* setLeverage.call(this, pair.symbol, cross ? 0 : leverage)
 		}
-
+		
 		const order = yield* post.call(this, "/order", params)
 		
 		//StopLoss
@@ -499,7 +499,9 @@ function BitMEXTestnet() {
 				
 				slParams.ordType  = "StopLimit"
 				
-				slParams.price    = Command.slp.relative(slParams.stopPx).resolve(0)
+				slParams.price    = Command.slp.relative(slParams.stopPx).resolve(market.precision)
+				console.log(slParams);
+				return false;
 				
 			}
 			yield* post.call(this, "/order", slParams)

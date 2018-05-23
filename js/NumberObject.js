@@ -119,11 +119,9 @@ function NumberObject(str) {
 
 			const decimals = Math.max(0, parseInt(precision, 10))
 			const stepping = precision - decimals
-			console.log(stepping);
 			let result = state.isRange
 				? rand_num_float(state.min, state.max, decimals)
 				: state.max.toFixed(decimals)
-			console.log(result);
 			if (stepping) {
 				// Round down to ensure sufficient funds
 				result = (Math.floor(result / stepping) * stepping).toFixed(decimals)
