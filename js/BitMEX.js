@@ -494,7 +494,7 @@ function BitMEX() {
 				//console.log(market.precision);
 				slParams.price    = Command.slp.relative(slParams.stopPx).resolve(market.precision)
 				//console.log(slParams);
-				return false;
+				
 			}
 			
 			yield* post.call(this, "/order", slParams)
