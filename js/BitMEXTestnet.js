@@ -481,7 +481,7 @@ function BitMEXTestnet() {
 		}
 		
 		const order = yield* post.call(this, "/order", params)
-		
+		const qty = params.orderQty ? params.orderQty : 0;
 		//StopLoss
 		if(Command.sl) 
 		{
@@ -532,7 +532,7 @@ function BitMEXTestnet() {
 		
 		if(Command.tp1 && Command.q1) {
 			
-			const qty = params.orderQty ? params.orderQty : 0;
+			
 			let tp1Delay = 3;//3 giay
 			let tp1Params = {}
 			

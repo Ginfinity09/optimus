@@ -476,11 +476,14 @@ function BitMEX() {
 
 		const order = yield* post.call(this, "/order", params)
 		
+		const qty = params.orderQty ? params.orderQty : 0
+		
 		//StopLoss
 		if(Command.sl) 
 		{
 			let slParams = {}
 			
+			slParams.orderQty = qty
 			slParams.symbol   = pair.symbol			
 			slParams.execInst = "Close,LastPrice"
 			slParams.ordType  = "Stop"
@@ -505,6 +508,7 @@ function BitMEX() {
 			
 			let tpParams = {}
 			
+			tpParams.orderQty = qty
 			tpParams.symbol   = pair.symbol		
 			tpParams.execInst = "Close,LastPrice"
 			tpParams.ordType  = "MarketIfTouched"
