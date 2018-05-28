@@ -31,6 +31,14 @@ function Command(raw) {
 		u: "Unit",
 		v: "Version",
 		y: "Yield",
+		tp1: "Take Profit 1",
+		tp2: "Take Profit 2",
+		tp3: "Take Profit 3",
+		tp4: "Take Profit 4",
+		q1: "Take Profit Qty 1",
+		q2: "Take Profit Qty 2",
+		q3: "Take Profit Qty 3",
+		q4: "Take Profit Qty 4",
 	}
 
 	function normalize() {
@@ -69,7 +77,7 @@ function Command(raw) {
 		}
 
 		const params = Object.assign({}, defaults) // detach reference
-		const reg = /(?:^|\s)([a-z]+)=([^\s]+)/g
+		const reg = /(?:^|\s)([a-z0-9]+)=([^\s]+)/g
 
 		if (!reg.test(str)) {
 			return false // Invalid syntax
@@ -140,6 +148,14 @@ function Command(raw) {
 			case "slp":
 			case "tp":
 			case "tpl":
+			case "tp1":
+			case "tp2":
+			case "tp3":
+			case "tp4":
+			case "q1":
+			case "q2":
+			case "q3":
+			case "q4":
 				this[p] = NumberObject(value)
 				break
 

@@ -521,6 +521,59 @@ function BitMEX() {
 			yield* post.call(this, "/order", tpParams)
 		}
 		
+		//Take Profit 1
+		if(Command.tp1 && Command.q1) {
+			
+			const qty = params.orderQty ? params.orderQty : 0;
+			let tp1Delay = 3;//3 giay
+			let tp1Params = {}
+			
+			tp1Params.symbol   = pair.symbol		
+			tp1Params.side     = (params.side == "Sell") ? "Buy" : "Sell"
+			tp1Params.execInst = "ReduceOnly"
+			tp1Params.ordType  = "Limit"
+			tp1Params.orderQty = Command.q1.reference(qty).resolve(0)
+			tp1Params.price = Command.tp1.relative(first).resolve(market.precision)
+			
+			yield* post.call(this, "/order", tp1Params)	
+			
+			
+			
+			if(Command.tp2 && Command.q2) {
+				
+				yield sleep.bind(this, tp1Delay)
+					
+				tp1Params.orderQty = Command.q2.reference(qty).resolve(0)
+				tp1Params.price    = Command.tp2.relative(first).resolve(market.precision)
+				
+				yield* post.call(this, "/order", tp1Params)	
+								
+			}
+			
+			if(Command.tp3 && Command.q3) 
+			{
+					yield sleep.bind(this, tp1Delay);
+					
+					tp1Params.orderQty = Command.q3.reference(qty).resolve(0)
+					tp1Params.price    = Command.tp3.relative(first).resolve(market.precision)
+					
+					yield* post.call(this, "/order", tp1Params)	
+					
+			}
+			
+			if(Command.tp4 && Command.q4) {
+				
+					yield sleep.bind(this, tp1Delay);
+				
+					tp1Params.orderQty = Command.q4.reference(qty).resolve(0)
+					tp1Params.price    = Command.tp4.relative(first).resolve(market.precision)
+					
+					yield* post.call(this, "/order", tp1Params)	
+					
+			}
+		}
+		
+		
 		return order
 	}
 

@@ -432,14 +432,14 @@ function BitMEXTestnet() {
 		const available = Command.y === "equity" ? balance.balance : balance.available
 		const cross = Command.hasOwnProperty("l") && Command.l === 0
 		const first = ((Command.isBid && Command.t !== "market") || (Command.isAsk && Command.t === "market")) ? market.bidPrice : market.askPrice
+		
 		let price = Command.p.relative(first).resolve(market.precision)
+		
 		if (Command.fp) {
 			price = Command.fp.resolve(market.precision)
 		}
 		const leverage = cross ? 100 : Command.l || 1
-		const contracts = getContracts(available, leverage, price, true)
-		
-		
+		const contracts = getContracts(available, leverage, price, true)		
 		
 		let params = {}
 		if (Command.t === "post") {
@@ -487,12 +487,12 @@ function BitMEXTestnet() {
 		{
 			let slParams = {}
 			
+			slParams.orderQty = qty
 			slParams.symbol   = pair.symbol			
 			slParams.execInst = "Close,LastPrice"
 			slParams.ordType  = "Stop"
 			slParams.side     = (params.side == "Sell") ? "Buy" : "Sell"
 			slParams.stopPx   = Command.sl.relative(first).resolve(market.precision)
-			
 			
 			//Nếu có Stop Limit
 			if(Command.slp) {
@@ -500,18 +500,19 @@ function BitMEXTestnet() {
 				slParams.ordType  = "StopLimit"
 				
 				slParams.price    = Command.slp.relative(slParams.stopPx).resolve(market.precision)
-				console.log(slParams);
-				return false;
 				
 			}
+			
 			yield* post.call(this, "/order", slParams)
 			
 		}
+		
 		//Take Profit
 		if (Command.tp) {
 			
 			let tpParams = {}
 			
+			tpParams.orderQty = qty
 			tpParams.symbol   = pair.symbol		
 			tpParams.execInst = "Close,LastPrice"
 			tpParams.ordType  = "MarketIfTouched"
@@ -523,10 +524,62 @@ function BitMEXTestnet() {
 				tpParams.ordType = "LimitIfTouched"
 				tpParams.price    = Command.tpl.relative(tpParams.stopPx).resolve(market.precision)
 			}
+			
 			yield* post.call(this, "/order", tpParams)
 		}
 		
 		
+		
+		if(Command.tp1 && Command.q1) {
+			
+			const qty = params.orderQty ? params.orderQty : 0;
+			let tp1Delay = 3;//3 giay
+			let tp1Params = {}
+			
+			tp1Params.symbol   = pair.symbol		
+			tp1Params.side     = (params.side == "Sell") ? "Buy" : "Sell"
+			tp1Params.execInst = "ReduceOnly"
+			tp1Params.ordType  = "Limit"
+			tp1Params.orderQty = Command.q1.reference(qty).resolve(0)
+			tp1Params.price = Command.tp1.relative(first).resolve(market.precision)
+			
+			yield* post.call(this, "/order", tp1Params)	
+			
+			
+			
+			if(Command.tp2 && Command.q2) {
+				
+				yield sleep.bind(this, tp1Delay)
+					
+				tp1Params.orderQty = Command.q2.reference(qty).resolve(0)
+				tp1Params.price    = Command.tp2.relative(first).resolve(market.precision)
+				
+				yield* post.call(this, "/order", tp1Params)	
+								
+			}
+			
+			if(Command.tp3 && Command.q3) 
+			{
+					yield sleep.bind(this, tp1Delay);
+					
+					tp1Params.orderQty = Command.q3.reference(qty).resolve(0)
+					tp1Params.price    = Command.tp3.relative(first).resolve(market.precision)
+					
+					yield* post.call(this, "/order", tp1Params)	
+					
+			}
+			
+			if(Command.tp4 && Command.q4) {
+				
+					yield sleep.bind(this, tp1Delay);
+				
+					tp1Params.orderQty = Command.q4.reference(qty).resolve(0)
+					tp1Params.price    = Command.tp4.relative(first).resolve(market.precision)
+					
+					yield* post.call(this, "/order", tp1Params)	
+					
+			}
+		}
 
 		return order
 	}
